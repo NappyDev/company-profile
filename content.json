@@ -1,0 +1,118 @@
+{
+  "heroVideo": "videos/beranda.mp4",
+  "aboutPhoto": "img/foto-bareng.JPG",
+  "aboutLogo": "img/logo.jpg",
+  "communityPhoto": "img/foto-bareng.JPG",
+  "carousel": [
+    {
+      "src": "img/game-2.png",
+      "title": "Super muslim",
+      "desc": "Game ali jihad"
+    },
+    {
+      "src": "img/game-1.png",
+      "title": "Slime lompat",
+      "desc": "slime kayak rimuru"
+    },
+    {
+      "src": "img/project-3.jpg",
+      "title": "Project Gamma",
+      "desc": "Platform e-commerce modern dengan integrasi multi-payment gateway."
+    },
+    {
+      "src": "img/project-4.jpg",
+      "title": "Project Delta",
+      "desc": "Website company profile interaktif dengan animasi scroll modern."
+    }
+  ],
+  "featured": [
+    {
+      "title": "Slimy Spin Spear",
+      "src": "https://img.itch.zone/aW1nLzI4MTI4MzYwLmdpZg==/315x250%23c/bsXNZc.gif",
+      "url": "https://napdev.itch.io/slimespear"
+    },
+    {
+      "title": "Project : OUTFRAME",
+      "src": "https://img.itch.zone/aW1nLzI3Mzk2MTIzLmdpZg==/315x250%23c/mx%2FX8V.gif",
+      "url": "https://napdev.itch.io/project-outframe"
+    },
+    {
+      "title": "Sepertiga Malam",
+      "src": "https://img.itch.zone/aW1nLzIxNDI1MzQxLnBuZw==/315x250%23c/6elDDF.png",
+      "url": "https://napdev.itch.io/sepertiga-malam"
+    }
+  ],
+  "games": [
+    {
+      "title": "Super Muslim",
+      "src": "img/game-2.png",
+      "url": "https://napdev.itch.io/supermoslem",
+      "category": "action",
+      "price": "Free",
+      "author": "Napdev",
+      "genre": "Action · Platformer"
+    },
+    {
+      "title": "Slimy Spin Spear",
+      "src": "https://img.itch.zone/aW1nLzI4MTI4MzYwLmdpZg==/315x250%23c/bsXNZc.gif",
+      "url": "https://napdev.itch.io/slimespear",
+      "category": "action",
+      "price": "Free",
+      "author": "Napdev",
+      "genre": "Action · Arcade"
+    },
+    {
+      "title": "Project : OUTFRAME",
+      "src": "https://img.itch.zone/aW1nLzI3Mzk2MTIzLmdpZg==/315x250%23c/mx%2FX8V.gif",
+      "url": "https://napdev.itch.io/project-outframe",
+      "category": "action",
+      "price": "Free",
+      "author": "Napdev",
+      "genre": "Action · Shooter"
+    },
+    {
+      "title": "Sepertiga Malam",
+      "src": "https://img.itch.zone/aW1nLzIxNDI1MzQxLnBuZw==/315x250%23c/6elDDF.png",
+      "url": "https://napdev.itch.io/sepertiga-malam",
+      "category": "adventure",
+      "price": "Free",
+      "author": "Napdev",
+      "genre": "Adventure · Puzzle"
+    },
+    {
+      "title": "Coming Soon",
+      "src": "https://img.itch.zone/aW1nLzI4MTI4MzYwLmdpZg==/315x250%23c/bsXNZc.gif",
+      "url": "https://napdev.itch.io/",
+      "category": "casual",
+      "price": "Soon",
+      "author": "Napdev",
+      "genre": "Casual · Relaxing"
+    },
+    {
+      "title": "Untitled Project",
+      "src": "https://img.itch.zone/aW1nLzI3Mzk2MTIzLmdpZg==/315x250%23c/mx%2FX8V.gif",
+      "url": "https://napdev.itch.io/",
+      "category": "adventure",
+      "price": "Soon",
+      "author": "Napdev",
+      "genre": "Adventure · Story"
+    }
+  ],
+  "team": [
+    {
+      "src": "img/foto-bareng.JPG",
+      "title": "Nama Anggota",
+      "desc": "Bertanggung jawab pada arah kreatif dan pengembangan produk. Berpengalaman lebih dari 8 tahun membangun aplikasi dan game untuk berbagai klien di Indonesia dan Asia Tenggara."
+    },
+    {
+      "src": "img/foto-bareng-2.JPG",
+      "title": "Nama Anggota",
+      "desc": "Fokus pada arsitektur sistem dan pengembangan backend. Menjaga kualitas kode dan performa produk agar tetap stabil, aman, dan mudah dikembangkan dalam jangka panjang."
+    },
+    {
+      "src": "img/foto-bareng-3.JPG",
+      "title": "Nama Anggota",
+      "desc": "Menangani desain antarmuka dan pengalaman pengguna. Memastikan setiap produk yang kami kirim terasa intuitif, konsisten, dan menyenangkan saat digunakan."
+    }
+  ]
+}

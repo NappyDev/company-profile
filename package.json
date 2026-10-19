@@ -1,0 +1,6 @@
+{
+  "name": "napdev-local-dashboard",
+  "private": true,
+  "scripts": { "dashboard": "node dashboard/server.mjs" },
+  "engines": { "node": ">=18" }
+}

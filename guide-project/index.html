@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games â€” Napdev</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/guide.css">
+</head>
+<body>
+
+<!-- Placeholder Navbar -->
+<div id="navbar-placeholder"></div>
+
+<!-- ===== GAMES SHOWCASE ===== -->
+<section class="games" id="games">
+
+  <div class="games-container">
+
+    <!-- Header -->
+    <div class="games-header">
+      <div class="games-header-left">
+        <span class="games-tag">All games</span>
+        <h1 class="games-title">Games we Guide to Create</h1>
+        <p class="games-subtitle">Kumpulan game yang dibimbing oleh Napdev untuk dibuat.</p>
+      </div>
+
+      <!-- Filter / Sort -->
+      <div class="games-filter">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="action">Action</button>
+        <button class="filter-btn" data-filter="adventure">Adventure</button>
+        <button class="filter-btn" data-filter="casual">Casual</button>
+      </div>
+    </div>
+
+    <!-- ===== GRID GAMES ===== -->
+    <!-- Kelola katalog melalui dashboard lokal. Data disimpan di content.json. -->
+    <div class="games-grid" id="gamesGrid">
+      <!-- Kartu dimuat dari content.json oleh js/site-content.js. -->
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- Placeholder Footer -->
+<div id="footer-placeholder"></div>
+
+<script>
+// Fetch navbar
+fetch('../component/navbar.html')
+  .then(response => response.text())
+  .then(data => {
+    document.getElementById('navbar-placeholder').innerHTML = data;
+  });
+
+// Fetch footer
+fetch('../component/footer.html')
+  .then(response => response.text())
+  .then(data => {
+    document.getElementById('footer-placeholder').innerHTML = data;
+  });
+
+// ===== Filter kategori =====
+(function () {
+  const buttons = document.querySelectorAll('.filter-btn');
+  // Daftar kartu dibaca ulang saat filter diklik karena konten dimuat dari JSON.
+  if (!buttons.length) return;
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filter = btn.dataset.filter;
+      document.querySelectorAll('.game-card').forEach(card => {
+        const match = filter === 'all' || card.dataset.tag === filter;
+        card.style.display = match ? '' : 'none';
+      });
+    });
+  });
+})();
+</script>
+
+<!-- Konten media dan kartu dikelola melalui dashboard lokal. -->
+<script src="../js/site-content.js" defer></script>
+</body>
+</html>

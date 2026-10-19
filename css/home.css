@@ -1,0 +1,534 @@
+/* ===== HERO (Video Background) ===== */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  background: #0a0a0a;
+  padding: 120px 0 80px;
+  isolation: isolate;
+}
+
+.hero-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.hero-video-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+  filter: grayscale(100%);
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.35) 40%,
+    rgba(0, 0, 0, 0.75) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  color: #ffffff;
+  max-width: 900px;
+}
+
+.hero h1 {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 800;
+  margin-bottom: 24px;
+  letter-spacing: -2px;
+  line-height: 1.05;
+  color: #ffffff;
+}
+
+.hero h1 span {
+  color: #d4d4d4;
+}
+
+.hero-desc {
+  font-size: 1.15rem;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 600px;
+  margin: 0 auto 40px;
+  line-height: 1.7;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.scroll-indicator span {
+  display: block;
+  width: 24px;
+  height: 40px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  position: relative;
+}
+
+.scroll-indicator span::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 8px;
+  background: #ffffff;
+  border-radius: 2px;
+  animation: scrollAnim 1.8s ease-in-out infinite;
+}
+
+@keyframes scrollAnim {
+  0% { opacity: 1; top: 8px; }
+  100% { opacity: 0; top: 22px; }
+}
+
+/* ===== OUR PROJECT — 3D TUBE CAROUSEL ===== */
+.projects {
+  background: #0a0a0a;
+  padding: 120px 0 0;
+  overflow: hidden;
+}
+
+.projects-header {
+  margin-bottom: 72px;
+}
+
+.projects-tag {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  color: #d4d4d4;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.projects-title {
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.15;
+  color: #ffffff;
+}
+
+/* ===== WRAPPER — 3D STAGE ===== */
+.tube-wrapper {
+  position: relative;
+  height: 600px;
+  max-width: 1100px;
+  margin: 0 auto;
+  perspective: 4000px;
+  perspective-origin: 50% 50%;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.tube-wrapper.dragging {
+  cursor: grabbing;
+}
+
+/* Shade kiri & kanan */
+.tube-wrapper::before,
+.tube-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 26%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.tube-wrapper::before {
+  left: 0;
+  background: linear-gradient(
+    90deg,
+    #0a0a0a 0%,
+    rgba(10, 10, 10, 0.9) 30%,
+    rgba(10, 10, 10, 0.55) 60%,
+    rgba(10, 10, 10, 0.15) 85%,
+    transparent 100%
+  );
+}
+
+.tube-wrapper::after {
+  right: 0;
+  background: linear-gradient(
+    270deg,
+    #0a0a0a 0%,
+    rgba(10, 10, 10, 0.9) 30%,
+    rgba(10, 10, 10, 0.55) 60%,
+    rgba(10, 10, 10, 0.15) 85%,
+    transparent 100%
+  );
+}
+
+/* ===== TABUNG ===== */
+.tube {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 265px;
+  height: 390px;
+  margin: -195px 0 0 -132.5px;
+  transform-style: preserve-3d;
+  transform: translateZ(-740px) rotateY(var(--rot, 0deg));
+  will-change: transform;
+}
+
+/* ===== KARTU ===== */
+.tube-card {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #1a1a1a;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.85);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: rotateY(calc(var(--i) * 22.5deg)) translateZ(740px);
+  cursor: pointer;
+}
+
+.tube-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(100%);
+  pointer-events: none;
+  -webkit-user-drag: none;
+  transition: filter 0.5s ease, transform 0.5s ease;
+}
+
+.tube-card:hover img {
+  filter: grayscale(0%);
+  transform: scale(1.05);
+}
+
+/* ===== OVERLAY — muncul saat hover ===== */
+.tube-card-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24px;
+  background: linear-gradient(
+    180deg,
+    transparent 25%,
+    rgba(0, 0, 0, 0.55) 60%,
+    rgba(0, 0, 0, 0.95) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  pointer-events: none;
+}
+
+.tube-card:hover .tube-card-overlay {
+  opacity: 1;
+}
+
+/* Judul — slide up saat hover */
+.tube-card-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #ffffff;
+  margin-bottom: 8px;
+  line-height: 1.2;
+  transform: translateY(14px);
+  transition: transform 0.45s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+/* Deskripsi — slide up dengan delay kecil */
+.tube-card-desc {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.55;
+  margin: 0;
+  transform: translateY(14px);
+  transition: transform 0.45s cubic-bezier(0.34, 1.2, 0.64, 1) 0.06s;
+}
+
+.tube-card:hover .tube-card-title,
+.tube-card:hover .tube-card-desc {
+  transform: translateY(0);
+}
+
+/* ===== GUIDE SECTION (Project we help to create) ===== */
+.guide {
+  background: #0a0a0a;
+  padding: 100px 0 80px;
+}
+
+.guide-header {
+  margin-bottom: 20px;
+}
+
+.guide-title {
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.15;
+  color: #ffffff;
+}
+
+.guide-desc {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 700px;
+  margin-bottom: 48px;
+  line-height: 1.7;
+}
+
+/* Grid 3 gambar sejajar ke samping */
+.guide-grid {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.guide-card {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #1a1a1a;
+  box-shadow: 0 25px 50px -15px rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+  display: block;
+  text-decoration: none;
+  aspect-ratio: 16 / 9;
+}
+
+.guide-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: filter 0.5s ease, transform 0.5s ease;
+}
+
+.guide-card:hover img,
+.guide-card:focus-visible img {
+  filter: grayscale(100%);
+  transform: scale(1.05);
+}
+
+.guide-card-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+  background: linear-gradient(
+    180deg,
+    transparent 30%,
+    rgba(0, 0, 0, 0.55) 60%,
+    rgba(0, 0, 0, 0.95) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.guide-card:hover .guide-card-overlay,
+.guide-card:focus-visible .guide-card-overlay {
+  opacity: 1;
+}
+
+.guide-card-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.2;
+  transform: translateY(12px);
+  transition: transform 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+.guide-card:hover .guide-card-title,
+.guide-card:focus-visible .guide-card-title {
+  transform: translateY(0);
+}
+
+/* See more */
+.guide-see-more {
+  display: block;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  text-decoration: none;
+  margin-top: 16px;
+  transition: color 0.3s ease;
+}
+
+.guide-see-more:hover {
+  color: #ffffff;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .tube-wrapper {
+    height: 500px;
+    max-width: 900px;
+    perspective: 3200px;
+  }
+
+  .tube {
+    width: 220px;
+    height: 325px;
+    margin: -162.5px 0 0 -110px;
+    transform: translateZ(-615px) rotateY(var(--rot, 0deg));
+  }
+
+  .tube-card {
+    transform: rotateY(calc(var(--i) * 22.5deg)) translateZ(615px);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 100px 0 60px;
+  }
+
+  .hero h1 {
+    letter-spacing: -1px;
+  }
+
+  .hero-desc {
+    font-size: 1rem;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .projects {
+    padding: 80px 0 0;
+  }
+
+  .projects-header {
+    margin-bottom: 48px;
+  }
+
+  .tube-wrapper {
+    height: 420px;
+    max-width: 100%;
+    perspective: 2600px;
+  }
+
+  .tube-wrapper::before,
+  .tube-wrapper::after {
+    width: 22%;
+  }
+
+  .tube {
+    width: 180px;
+    height: 265px;
+    margin: -132.5px 0 0 -90px;
+    transform: translateZ(-500px) rotateY(var(--rot, 0deg));
+  }
+
+  .tube-card {
+    transform: rotateY(calc(var(--i) * 22.5deg)) translateZ(500px);
+  }
+
+  .tube-card-overlay {
+    padding: 16px;
+  }
+
+  .tube-card-title {
+    font-size: 1rem;
+    margin-bottom: 6px;
+  }
+
+  .tube-card-desc {
+    font-size: 0.75rem;
+  }
+
+  .guide {
+    padding: 80px 0 60px;
+  }
+
+  .guide-grid {
+    gap: 12px;
+  }
+
+  .guide-card-title {
+    font-size: 0.9rem;
+  }
+
+  .guide-card-overlay {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tube-wrapper {
+    height: 360px;
+    perspective: 2200px;
+  }
+
+  .tube {
+    width: 150px;
+    height: 220px;
+    margin: -110px 0 -75px;
+    transform: translateZ(-415px) rotateY(var(--rot, 0deg));
+  }
+
+  .tube-card {
+    transform: rotateY(calc(var(--i) * 22.5deg)) translateZ(415px);
+  }
+}

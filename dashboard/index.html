@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard Napdev</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f6f9;color:#182235;font:15px/1.5 system-ui,sans-serif}header{background:#14213b;color:white;padding:28px max(24px,calc((100vw - 1120px)/2))}h1{font-size:28px;margin:0}header p{color:#c7d3e8;margin:6px 0 18px}button,.button{font:inherit;border:1px solid #c7d1e0;background:white;color:#182235;border-radius:8px;padding:10px 16px;cursor:pointer;text-decoration:none;display:inline-block}button:hover,.button:hover{background:#edf2fa}button:disabled{opacity:.5;cursor:wait}.primary{background:#2459d3;color:white;border-color:#2459d3}.primary:hover{background:#1946af}.danger{color:#a62432}nav{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0}nav .active{background:#14213b;color:white}main{max-width:1120px;padding:0 24px 120px;margin:auto}.card{background:white;border:1px solid #dce2eb;border-radius:14px;padding:24px;margin:16px 0}.card h2,.card h3{margin:0 0 12px}.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}label{display:block;font-weight:600}input,textarea,select{font:inherit;width:100%;border:1px solid #bfc9d8;border-radius:7px;padding:10px;background:white;color:#182235;margin:6px 0}textarea{min-height:85px;resize:vertical}input[type=file]{font-size:13px}small,.muted{color:#56677d;font-weight:400}.preview{width:100%;height:150px;object-fit:contain;background:#edf1f7;border-radius:8px;margin-top:8px}.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.toolbar h3{flex:1}.bottom{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #dce2eb;padding:14px 24px;display:flex;gap:20px;align-items:center;justify-content:center;box-shadow:0 -5px 20px #14213b0b}#status{max-width:650px}#status[data-error=true]{color:#b32434}.file-row{display:flex;gap:16px;align-items:center;padding:12px 0;border-bottom:1px solid #e5eaf0}.file-row span{flex:1;overflow-wrap:anywhere}pre{white-space:pre-wrap;background:#14213b;color:#e2eafa;padding:20px;border-radius:8px}a{color:#2459d3}@media(max-width:600px){.card{padding:16px}.bottom{align-items:stretch;flex-direction:column;gap:6px;padding:10px 16px}h1{font-size:24px}}
+</style>
+</head>
+<body>
+<header><h1>Konten Napdev</h1><p>1. Edit konten → 2. Simpan → 3. Lihat hasil → 4. Kirim ke GitHub</p><a class="button" href="/" target="_blank" rel="noopener">Lihat website ↗</a></header>
+<main><nav aria-label="Bagian konten" id="tabs"></nav><form id="editor"><div id="content">Memuat konten…</div><div class="bottom"><button type="submit" class="primary" id="save" disabled>Simpan perubahan</button><span id="status" role="status" aria-live="polite">Menghubungkan ke dashboard lokal…</span></div></form></main>
+<script>
+// Dashboard mengubah content.json dan file media melalui server lokal.
+const sections = { media:'Foto & video', carousel:'Carousel', featured:'Kartu beranda', games:'Katalog game', team:'Anggota tim', files:'File unggahan', publish:'Kirim ke GitHub' };
+const fields = { carousel:[['title','Nama proyek'],['desc','Deskripsi'],['src','Gambar']], featured:[['title','Nama game'],['url','Link game'],['src','Gambar']], games:[['title','Nama game'],['url','Link game'],['category','Kategori'],['price','Harga / status'],['author','Developer'],['genre','Genre'],['src','Gambar']], team:[['title','Nama anggota'],['desc','Bio / peran'],['src','Foto']] };
+const mediaFields = [['heroVideo','Video beranda'],['aboutPhoto','Foto header About'],['aboutLogo','Logo About'],['communityPhoto','Foto komunitas Contact']];
+let data, active = 'media', dirty = false, saving = false, uploads = 0;
+const content = document.getElementById('content'), status = document.getElementById('status'), save = document.getElementById('save');
+const say = (message, error=false) => { status.textContent=message; status.dataset.error=error; };
+const mark = () => { dirty=true; say('Ada perubahan yang belum disimpan.'); };
+async function api(url, options={}) {
+  const response=await fetch(url, options); const result=await response.json();
+  if(!response.ok) throw new Error(result.error || 'Permintaan gagal.'); return result;
+}
+function el(tag, text, className) { const node=document.createElement(tag); if(text!==undefined) node.textContent=text; if(className) node.className=className; return node; }
+function action(text, handler, className) { const button=el('button',text,className); button.type='button'; button.onclick=handler; return button; }
+function field(object,key,title, video=false) {
+  const wrapper=el('div'), label=el('label',title); wrapper.append(label);
+  const input=el(key==='desc'?'textarea':key==='category'?'select':'input');
+  if(key==='category') ['action','adventure','casual'].forEach(value=>{const option=el('option',value);option.value=value;input.append(option);});
+  input.value=object[key] || ''; input.maxLength=5000; label.append(input);
+  if(key==='title') input.required=true;
+  input.addEventListener('input',()=>{object[key]=input.value;mark();if(preview)preview.src=resolveMedia(input.value);});
+  let preview;
+  if(key==='src'||mediaFields.some(([k])=>k===key)) {
+    const note=el('small','Pilih file dari komputer, atau tempel URL/path pada isian di atas.');wrapper.append(note);
+    const file=el('input');file.type='file';file.accept=video?'.mp4,.webm':'.jpg,.jpeg,.png,.gif,.webp,.avif';file.setAttribute('aria-label','Pilih file untuk '+title);wrapper.append(file);
+    preview=el(video?'video':'img',undefined,'preview');if(video){preview.controls=true;preview.preload='metadata';}else preview.alt=title;
+    const unavailable=el('small','Media belum tersedia. Pilih file baru atau periksa alamatnya.');unavailable.hidden=true;
+    preview.onerror=()=>{unavailable.hidden=false;};preview.addEventListener(video?'loadedmetadata':'load',()=>{unavailable.hidden=true;});
+    if(object[key])preview.src=resolveMedia(object[key]);wrapper.append(preview,unavailable);
+    file.onchange=async()=>{
+      const upload=file.files[0];if(!upload)return;
+      if(upload.size>90*1024*1024){say('Pilih file berukuran maksimum 90 MB.',true);file.value='';return;}
+      uploads++;save.disabled=true;file.disabled=true;say('Mengunggah '+upload.name+'…');
+      try{const result=await api('/api/upload?name='+encodeURIComponent(upload.name),{method:'POST',body:upload});object[key]=result.path;input.value=result.path;preview.src=resolveMedia(result.path);mark();say('File diunggah. Klik Simpan perubahan untuk menggunakannya.');}
+      catch(error){say(error.message,true);}finally{uploads--;save.disabled=uploads>0||saving;file.disabled=false;file.value='';}
+    };
+  }
+  return wrapper;
+}
+function resolveMedia(value){try{const url=new URL(value,location.origin+'/');return ['http:','https:'].includes(url.protocol)?url.href:'';}catch{return '';}}
+function render() {
+  document.getElementById('tabs').replaceChildren(...Object.entries(sections).map(([key,title])=>action(title,()=>{if(uploads){say('Tunggu unggahan selesai dahulu.',true);return;}active=key;render();},active===key?'active':'')));
+  content.replaceChildren();
+  if(active==='media') {
+    const box=el('section',undefined,'card');box.append(el('h2','Ganti foto & video'),el('p','Pilih file baru, lalu klik Simpan perubahan.','muted'));
+    const grid=el('div',undefined,'fields');mediaFields.forEach(([key,title])=>grid.append(field(data,key,title,key==='heroVideo')));box.append(grid);content.append(box);return;
+  }
+  if(fields[active]) {
+    content.append(el('h2',sections[active]));
+    content.append(el('p','Ubah isian atau pilih gambar baru. Perubahan berlaku setelah Anda klik Simpan perubahan.','muted'));
+    data[active].forEach((item,index)=>{
+      const box=el('section',undefined,'card'), toolbar=el('div',undefined,'toolbar');toolbar.append(el('h3',`${index+1}. ${item.title||'Kartu baru'}`));
+      toolbar.append(action('↑',()=>move(index,-1)),action('↓',()=>move(index,1)),action('Hapus kartu',()=>{if(confirm('Hapus kartu ini? File gambarnya tetap tersimpan.')){data[active].splice(index,1);mark();render();}},'danger'));
+      const grid=el('div',undefined,'fields');fields[active].forEach(([key,title])=>grid.append(field(item,key,title)));box.append(toolbar,grid);content.append(box);
+    });
+    content.append(action('+ Tambah '+(active==='team'?'anggota':'kartu'),()=>{data[active].push(Object.fromEntries(fields[active].map(([key])=>[key,key==='category'?'action':key==='price'?'Free':'' ])));mark();render();content.lastElementChild.previousElementSibling?.scrollIntoView({behavior:'smooth'});},'primary'));return;
+  }
+  if(active==='files') { renderFiles();return; }
+  const box=el('section',undefined,'card');box.append(el('h2','Kirim perubahan ke GitHub'),el('p','Simpan perubahan, lalu buka “Lihat website” untuk memeriksa hasilnya. Setelah siap, buka terminal baru di folder proyek dan tempel tiga perintah berikut.'));
+  const commands='git add .\ngit commit -m "Update konten website"\ngit push';box.append(el('pre',commands),action('Salin perintah Git',async()=>{try{await navigator.clipboard.writeText(commands);say('Perintah disalin. Tempel di terminal baru pada folder proyek.');}catch{say('Pilih dan salin teks perintah secara manual.',true);}},'primary'),el('p','Website online berubah setelah push dan proses GitHub Pages selesai. Jendela terminal dashboard boleh tetap terbuka.','muted'));content.append(box);
+}
+function move(index,direction){const list=data[active],target=index+direction;if(target<0||target>=list.length)return;[list[index],list[target]]=[list[target],list[index]];mark();render();}
+async function renderFiles(){
+  const box=el('section',undefined,'card');box.append(el('h2','File media'),el('p','File asli proyek tetap disimpan. File unggahan dashboard yang sudah tidak dipakai dapat dihapus setelah perubahan konten disimpan.','muted'));content.append(box);
+  try{const files=await api('/api/media');if(!files.length)box.append(el('p','Belum ada file media.'));
+    for(const file of files){const row=el('div',undefined,'file-row');row.append(el('span',file));const used=JSON.stringify(data).includes(JSON.stringify(file));
+      if(used)row.append(el('small','Sedang dipakai'));
+      else if(/\/(upload-)/.test(file))row.append(action('Hapus file',async()=>{if(dirty){say('Simpan perubahan dahulu sebelum menghapus file.',true);return;}if(!confirm('Hapus file ini dari komputer? '+file))return;try{await api('/api/media?path='+encodeURIComponent(file),{method:'DELETE'});row.remove();say('File dihapus.');}catch(error){say(error.message,true);}},'danger'));
+      else row.append(el('small','File asli'));box.append(row);
+    }
+  }catch(error){say(error.message,true);}
+}
+document.getElementById('editor').onsubmit=async event=>{
+  event.preventDefault();if(uploads||saving)return;saving=true;save.disabled=true;
+  try{await api('/api/content',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});dirty=false;say('Tersimpan di komputer. Klik Lihat website untuk melihat hasilnya.');}
+  catch(error){say(error.message,true);}finally{saving=false;save.disabled=uploads>0;}
+};
+window.addEventListener('beforeunload',event=>{if(dirty||uploads){event.preventDefault();event.returnValue='';}});
+api('/api/content').then(result=>{data=result;save.disabled=false;render();say('Siap mengedit. Perubahan online dikirim melalui Git.');}).catch(()=>{content.replaceChildren(el('section','Buka dashboard melalui BUKA-DASHBOARD.bat, lalu gunakan alamat http://127.0.0.1:4310/dashboard.','card'));say('Dashboard memerlukan server lokal yang berjalan.',true);});
+</script>
+</body>
+</html>

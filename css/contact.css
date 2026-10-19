@@ -1,0 +1,197 @@
+/* ===== FOTO KOMUNITAS ===== */
+.community-photo {
+  position: relative;
+  height: clamp(300px, 48vw, 580px);
+  padding: 0;
+  overflow: hidden;
+  background: #111111;
+}
+
+.community-photo::after {
+  content: '';
+  position: absolute;
+  inset: 45% 0 0;
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.52));
+  pointer-events: none;
+}
+
+.community-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 55%;
+}
+
+/* ===== SOCIAL SECTION ===== */
+.social-section {
+  background: #0a0a0a;
+  padding: 64px 0 120px;
+}
+
+.community-header {
+  max-width: 740px;
+  margin: 0 auto 52px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.community-header .hero-tagline {
+  margin-bottom: 12px;
+}
+
+.community-header h1 {
+  margin-bottom: 16px;
+  color: #ffffff;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1.05;
+}
+
+.community-header h1 span {
+  color: #d4d4d4;
+}
+
+.community-header > p:last-child {
+  max-width: 520px;
+  margin: 0 auto;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.social-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.social-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 148px;
+  gap: 20px;
+  padding: 28px;
+  background: #171717;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #ffffff;
+  text-decoration: none;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.social-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.social-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.32);
+  box-shadow: 0 14px 36px -20px rgba(255, 255, 255, 0.35);
+}
+
+.social-card:hover::before {
+  opacity: 1;
+}
+
+/* Ikon — semua abu, tidak ada warna per platform */
+.social-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  color: #d4d4d4;
+  flex-shrink: 0;
+  transition: all 0.35s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.social-card:hover .social-icon {
+  background: #ffffff;
+  color: #0a0a0a;
+  transform: scale(1.05);
+}
+
+.social-info {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.social-info h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 3px;
+  letter-spacing: -0.3px;
+  color: #ffffff;
+}
+
+.social-info p {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+.social-arrow {
+  font-size: 1.3rem;
+  color: rgba(255, 255, 255, 0.2);
+  transition: all 0.35s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.social-card:hover .social-arrow {
+  color: #ffffff;
+  transform: translateX(4px);
+}
+
+/* Semua card pakai aksen abu yang sama — tidak ada per-platform */
+.social-card.discord,
+.social-card.gmail,
+.social-card.instagram,
+.social-card.youtube {
+  --accent: #d4d4d4;
+}
+
+/* ===== RESPONSIVE CONTACT ===== */
+@media (max-width: 768px) {
+  .community-photo {
+    height: clamp(260px, 65vw, 400px);
+  }
+
+  .social-section {
+    padding: 48px 0 80px;
+  }
+
+  .community-header {
+    margin-bottom: 36px;
+  }
+
+  .social-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .social-card {
+    padding: 20px;
+  }
+
+  .social-icon {
+    width: 46px;
+    height: 46px;
+  }
+}

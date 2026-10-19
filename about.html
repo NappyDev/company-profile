@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang Kami — Napdev</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/about.css" />
+</head>
+<body>
+
+    <!-- Placeholder Navbar -->
+    <div id="navbar-placeholder"></div>
+
+    <!-- ===== ABOUT PAGE ===== -->
+    <section class="about-page">
+
+        <!-- ===== ABOUT HERO (Background Foto) ===== -->
+        <!-- Kelola media/kartu melalui dashboard lokal; lihat GUIDEBOOK.md. -->
+        <section class="about-hero">
+            <div class="about-hero-bg" aria-hidden="true">
+                <img src="img/foto-bareng.JPG" alt="" />
+            </div>
+            <div class="about-hero-overlay"></div>
+            <div class="container about-hero-content">
+                <p class="hero-tagline">ABOUT US</p>
+                <h1>Tentang kami</h1>
+            </div>
+        </section>
+
+        <!-- ===== LOGO + DESKRIPSI (Center) ===== -->
+        <div class="container">
+            <section class="about-intro">
+
+                <!-- Logo — tanpa efek -->
+                <!-- Kelola media/kartu melalui dashboard lokal; lihat GUIDEBOOK.md. -->
+                <div class="about-logo">
+                    <img src="img/logo.jpg" alt="Logo Napdev" />
+                </div>
+
+                <!-- Deskripsi — align center -->
+                <div class="about-description">
+                    <p>
+                        <strong>Napdev</strong> adalah perusahaan teknologi yang berfokus pada
+                        pengembangan produk digital — mulai dari website, aplikasi mobile, game,
+                        hingga solusi enterprise. Kami percaya bahwa teknologi yang baik harus
+                        terasa sederhana, cepat, dan menyenangkan bagi penggunanya.
+                    </p>
+                    <p>
+                        Selama lebih dari 8 tahun, kami telah bekerja sama dengan berbagai klien,
+                        dari startup lokal hingga perusahaan multinasional. Setiap proyek kami
+                        perlakukan sebagai kemitraan jangka panjang, bukan sekadar transaksi.
+                    </p>
+                    <p>
+                        Kami menggabungkan keahlian teknis, desain yang thoughtful, dan strategi
+                        bisnis yang matang untuk menghasilkan produk yang tidak hanya indah,
+                        tetapi juga berdampak nyata pada pertumbuhan bisnis klien kami.
+                    </p>
+                </div>
+
+            </section>
+
+            <!-- ===== THE TEAM (3 Kolom) ===== -->
+            <section class="our-team" id="team">
+                <h2 class="team-heading">The Team</h2>
+                <!-- Kelola media/kartu melalui dashboard lokal; lihat GUIDEBOOK.md. -->
+                <div class="team-grid">
+                    <!-- Anggota dimuat dari content.json oleh js/site-content.js. -->
+                </div>
+            </section>
+
+        </div>
+
+    </section>
+
+    <!-- Placeholder Footer -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Script untuk navbar & footer -->
+    <script>
+        fetch('component/navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar-placeholder').innerHTML = data;
+            });
+
+        fetch('component/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            });
+    </script>
+
+<!-- Konten media dan kartu dikelola melalui dashboard lokal. -->
+<script src="js/site-content.js" defer></script>
+</body>
+</html>
